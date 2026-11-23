@@ -1,0 +1,18 @@
+<h2>Confirmar Eliminación</h2>
+
+<p>Esta acción es permanente y no se puede deshacer.</p>
+
+<p><strong>Estudiante:</strong> <%= reserva.estudiante %></p>
+<p><strong>Email:</strong> <%= reserva.email %></p>
+<p><strong>Sala:</strong> <%= reserva.sala %></p>
+<p><strong>Fecha:</strong> <%= reserva.fecha %></p>
+<p><strong>Turno:</strong> <%= reserva.turno %></p>
+<p><strong>ID:</strong> <%= reserva._id %></p>
+<p><strong>Personas:</strong> <%= reserva.personas %></p>
+
+<form action="/reservas/<%= reserva._id %>/eliminar" method="POST">
+    <input type="hidden" name="confirmar" value="si">
+    <button type="submit">Eliminar Reserva</button>
+</form>
+
+<a href="/reservas/<%= reserva._id %>">Cancelar</a>

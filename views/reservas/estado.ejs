@@ -1,0 +1,33 @@
+<h2>Cambiar estado de la reserva</h2>
+
+<p><strong>Estudiante:</strong> <%= reserva.estudiante %></p>
+<p><strong>Sala:</strong> <%= reserva.sala %></p>
+<p><strong>Fecha:</strong> <%= reserva.fecha %></p>
+<p><strong>Turno:</strong> <%= reserva.turno %></p>
+
+<% if (locals.errores && errores.length > 0) { %>
+  <div role="alert" class="alert-errores">
+    <ul>
+      <% errores.forEach(error => { %>
+        <li><%= error %></li>
+      <% }) %>
+    </ul>
+  </div>
+<% } %>
+
+<% const estadoSeleccionado = locals.valores?.estado ?? reserva.estado; %>
+
+<form action="/reservas/<%= reserva._id %>/estado" method="POST">
+  <label for="estado">Estado:</label>
+  <select id="estado" name="estado">
+    <option value="pendiente" <%= estadoSeleccionado === "pendiente" ? "selected" : "" %>>
+      pendiente
+    </option>
+    <option value="confirmada" <%= estadoSeleccionado === "confirmada" ? "selected" : "" %>>
+      confirmada
+    </option>
+  </select>
+
+  <button type="submit">Guardar estado</button>
+  <a href="/reservas/<%= reserva._id %>">Cancelar</a>
+</form>

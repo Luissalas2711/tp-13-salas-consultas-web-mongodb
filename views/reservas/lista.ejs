@@ -1,0 +1,103 @@
+<h2>Listado de Reservas</h2>
+
+<form method="GET" action="/reservas">
+  <label for="q">Estudiante:</label>
+  <input id="q" name="q" type="text" maxlength="60" value="<%= criterios.q %>">
+
+  <label for="sala">Sala:</label>
+  <select id="sala" name="sala">
+    <option value="">Todas las salas</option>
+    <% salasPermitidas.forEach(salaPermitida=> { %>
+      <option value="<%= salaPermitida %>" <%=criterios.sala===salaPermitida ? "selected" : "" %>
+        >
+        <%= salaPermitida %>
+      </option>
+      <% }) %>
+  </select>
+
+  <label for="orden">Orden:</label>
+  <select id="orden" name="orden">
+    <option value="estudiante" <%=criterios.orden==="estudiante" ? "selected" : "" %>
+      >
+      Estudiante
+    </option>
+    <option value="personas-asc" <%=criterios.orden==="personas-asc" ? "selected" : "" %>
+      >
+      Personas ascendente
+    </option>
+    <option value="personas-desc" <%=criterios.orden==="personas-desc" ? "selected" : "" %>
+      >
+      Personas descendente
+    </option>
+  </select>
+
+  <button type="submit">Buscar</button>
+  <a href="/reservas">Limpiar</a>
+</form>
+
+<% if (reservas && reservas.length> 0) { %>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Estudiante</th>
+        <th>Sala</th>
+        <th>Fecha</th>
+        <th>Turno</th>
+        <th>Personas</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% reservas.forEach(reserva=> { %>
+        <tr>
+          <td>
+            <%= reserva.id %>
+          </td>
+          <td>
+            <%= reserva.estudiante %>
+          </td>
+          <td>
+            <%= reserva.sala %>
+          </td>
+          <td>
+            <%= reserva.fecha %>
+          </td>
+          <td>
+            <%= reserva.turno %>
+          </td>
+          <td>
+            <%= reserva.personas %>
+          </td>
+          <td>
+            <a href="/reservas/<%= reserva.id %>">Ver detalle</a>
+          </td>
+        </tr>
+        <% }) %>
+    </tbody>
+  </table>
+  <% } else { %>
+    <p>No hay coincidencias.</p>
+    <% } %>
+      <% if (paginacion.paginas> 1) { %>
+        <div>
+          <% if (paginacion.pagina> 1) { %>
+            <a
+              href="/reservas?q=<%= encodeURIComponent(criterios.q) %>&amp;sala=<%= encodeURIComponent(criterios.sala) %>&amp;orden=<%= criterios.orden %>&amp;pagina=<%= paginacion.pagina - 1 %>&amp;limite=<%= paginacion.limite %>">
+              Anterior
+            </a>
+            <% } %>
+
+              <span>Página <%= paginacion.pagina %> de <%= paginacion.paginas %></span>
+
+              <% if (paginacion.pagina < paginacion.paginas) { %>
+                <a
+                  href="/reservas?q=<%= encodeURIComponent(criterios.q) %>&amp;sala=<%= encodeURIComponent(criterios.sala) %>&amp;orden=<%= criterios.orden %>&amp;pagina=<%= paginacion.pagina + 1 %>&amp;limite=<%= paginacion.limite %>">
+                  Siguiente
+                </a>
+                <% } %>
+        </div>
+        <% } %>
+
+          <br>
+          <a href="/reservas/nueva">Crear una nueva reserva</a>
